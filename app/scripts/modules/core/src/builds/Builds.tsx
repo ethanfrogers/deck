@@ -2,15 +2,24 @@ import * as React from 'react';
 
 import { IBuild, IInstanceCounts, IServerGroup } from 'core/domain';
 import { ServerGroupManagerReader } from 'core/ServerGroupManager';
+import { IServerGroupSummary, IServerGroupManager } from 'core/domain/IServerGroupManager';
 
 export interface IBuildServerGroups {
-  build: IBuild;
-  serverGroups: IServerGroup[];
+  buildServerGroups: IBuildServerGroup[];
 }
-export class Builds extends React.Component {
-  public getApplicationBuilds(): IBuildServerGroups[] {
-    const serverGroups = ServerGroupManagerReader.getServerGroupManagersForApplication('Kustomize');
+export interface IBuildServerGroup {
+  build: IBuild;
+  serverGroups: IServerGroupSummary[];
+}
 
+export interface IBuildsProps {}
+
+export class Builds extends React.Component<IBuildsProps, IBuildServerGroups> {
+  public state: IBuildServerGroups = {
+    buildServerGroups: [],
+  };
+
+  public componentDidMount() {
     const build: IBuild = {
       number: 43,
       result: '0488d5162',
@@ -22,35 +31,20 @@ export class Builds extends React.Component {
       artifacts: [],
     };
 
-    const instanceCount: IInstanceCounts = {
-      up: 10,
-      down: 10,
-      starting: 1,
-      succeeded: 1,
-      failed: 1,
-      unkown: 1,
-      outOfService: 1,
-      unknown: 1,
-    };
+    const serverGroupManagers = ServerGroupManagerReader.getServerGroupManagersForApplication('Kustomize');
+    serverGroupManagers.then((sgm: IServerGroupManager[]) => {
+      const serverGroups = sgm[0].serverGroups;
 
-    const serverGroup: IServerGroup = {
-      account: 'Fake Account',
-      cloudProvider: 'AWS',
-      cluster: 'prod',
-      instanceCounts: instanceCount,
-      instances: [],
-      name: 'prod-myapp-cluster-001',
-      region: 'us-west-1',
-      type: 'aws',
-    };
-
-    const buildSG: IBuildServerGroups = {
-      build: build,
-      serverGroups: [serverGroup],
-    };
-
-    return [buildSG, buildSG, buildSG, buildSG, buildSG, buildSG];
+      const buildServerGroup: IBuildServerGroup = {
+        build: build,
+        serverGroups: serverGroups,
+      };
+      this.setState({
+        buildServerGroups: [buildServerGroup],
+      });
+    });
   }
+
   public render() {
     return (
       <div className="row">
