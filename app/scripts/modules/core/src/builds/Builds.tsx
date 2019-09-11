@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { IBuild, IInstanceCounts, IServerGroup } from 'core/domain';
+import { ServerGroupManagerReader } from 'core/ServerGroupManager';
 
 export interface IBuildServerGroups {
   build: IBuild;
@@ -8,6 +9,8 @@ export interface IBuildServerGroups {
 }
 export class Builds extends React.Component {
   public getApplicationBuilds(): IBuildServerGroups[] {
+    const serverGroups = ServerGroupManagerReader.getServerGroupManagersForApplication('Kustomize');
+
     const build: IBuild = {
       number: 43,
       result: '0488d5162',
