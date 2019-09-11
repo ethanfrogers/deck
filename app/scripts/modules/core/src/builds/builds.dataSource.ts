@@ -1,8 +1,9 @@
 import { ApplicationDataSourceRegistry } from '../application/service/ApplicationDataSourceRegistry';
 
-const angular = require('angular');
+import { module } from 'angular';
 
-module.exports = angular.module('spinnaker.core.builds.dataSource', []).run(function() {
+export const BUILDS_DATA_SOURCE = 'spinnaker.core.builds.dataSource';
+module(BUILDS_DATA_SOURCE, []).run(function() {
   ApplicationDataSourceRegistry.registerDataSource({
     key: 'builds',
     sref: '.builds',

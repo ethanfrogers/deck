@@ -66,6 +66,7 @@ import { WHATS_NEW_MODULE } from './whatsNew/whatsNew.module';
 import { WIDGETS_MODULE } from './widgets/widgets.module';
 
 import * as State from './state';
+import { BUILDS_MODULE } from './builds/builds.module';
 
 // load all templates into the $templateCache
 const templates = require.context('./', true, /\.html$/);
@@ -139,7 +140,7 @@ module(CORE_MODULE, [
 
   require('./task/task.module').name,
 
-  require('./builds/builds.module').name,
+  BUILDS_MODULE,
 
   require('./utils/utils.module').name,
 
