@@ -13,7 +13,7 @@ module(BUILDS_STATES, [APPLICATION_STATE_PROVIDER]).config([
       name: 'builds',
       url: '/builds',
       views: {
-        pipelines: { component: Builds, $type: 'react' },
+        insight: { component: Builds, $type: 'react' },
       },
       params: {
         q: { dynamic: true, value: null },
