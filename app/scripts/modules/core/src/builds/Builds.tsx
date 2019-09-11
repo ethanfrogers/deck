@@ -11,7 +11,6 @@ export interface IBuildServerGroup {
   build: IBuild;
   serverGroups: IServerGroupSummary[];
 }
-
 export interface IBuildsProps {}
 
 export class Builds extends React.Component<IBuildsProps, IBuildServerGroups> {
@@ -31,7 +30,7 @@ export class Builds extends React.Component<IBuildsProps, IBuildServerGroups> {
       artifacts: [],
     };
 
-    const serverGroupManagers = ServerGroupManagerReader.getServerGroupManagersForApplication('Kustomize');
+    const serverGroupManagers = ServerGroupManagerReader.getServerGroupManagersForApplication('kustomize');
     serverGroupManagers.then((sgm: IServerGroupManager[]) => {
       const serverGroups = sgm[0].serverGroups;
 
@@ -46,16 +45,37 @@ export class Builds extends React.Component<IBuildsProps, IBuildServerGroups> {
   }
 
   public render() {
+    const { buildServerGroups } = this.state;
     return (
-      <div className="row">
-        <div className="col-md-12">
-          <div className="well alert alert-info">
-            <a target="_blank" href="">
-              Look at all these builds...?
-            </a>
-          </div>
-        </div>
-      </div>
+      <table className="table table-hover">
+        <thead>
+          <tr>
+            <th style={{ width: '25%' }}>Build Number</th>
+            <th style={{ width: '25%' }}>Result</th>
+            <th style={{ width: '25%' }}>Timestamp</th>
+            <th style={{ width: '25%' }}>Server Groups</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {buildServerGroups.map(buildSG => {
+            const build = buildSG.build;
+
+            return (
+              <tr key={build.number} className="clickable">
+                <td>{build.number}</td>
+                <td>{build.result}</td>
+                <td>{build.timestamp.toDateString()}</td>
+                <td>
+                  {buildSG.serverGroups.map(serverGroup => {
+                    return <p>{serverGroup.name}</p>;
+                  })}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     );
   }
 }
