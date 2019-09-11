@@ -46,7 +46,7 @@ export class Builds extends React.Component {
       serverGroups: [serverGroup],
     };
 
-    return [buildSG];
+    return [buildSG, buildSG, buildSG, buildSG, buildSG, buildSG];
   }
   public render() {
     return (
