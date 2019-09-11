@@ -139,6 +139,8 @@ module(CORE_MODULE, [
 
   require('./task/task.module').name,
 
+  require('./builds/builds.module').name,
+
   require('./utils/utils.module').name,
 
   WHATS_NEW_MODULE,
